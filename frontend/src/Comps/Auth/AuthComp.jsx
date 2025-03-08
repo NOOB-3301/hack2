@@ -1,48 +1,59 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useOCAuth } from "@opencampus/ocid-connect-js";
 import { FaShieldAlt, FaCertificate, FaBrain } from "react-icons/fa";
 import { motion } from "framer-motion";
+import { jwtDecode } from "jwt-decode";
 
 const LandingPage = () => {
     const { isInitialized, authState, ocAuth, OCId, ethAddress } = useOCAuth();
-    
+    console.log(jwtDecode(JSON.parse(localStorage.getItem("oc-token-storage")).access_token))
+    console.log(JSON.parse(localStorage.getItem("oc-token-storage")).access_token);
     useEffect(() => {
-
-    }, [])
-    
-    
+        console.log("OCID:", OCId)
+        console.log("Eth Address:", ethAddress)
+        console.log("Auth State:", authState)
+        console.log("OC Auth:", ocAuth)
+        console.log("Is Initialized:", isInitialized)
+    }, []);
     const handleLogin = async () => {
         console.log("Login initiated");
         console.log(ocAuth);
-
         try {
-            await ocAuth.signInWithRedirect({ state: "opencampus" });
+            await ocAuth.signInWithRedirect({ state: 'opencampus' });
         } catch (error) {
             console.error("Login error:", error);
         }
     };
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-gray-950 via-purple-900 to-gray-950 text-white flex flex-col items-center px-6 py-12 relative overflow-hidden">
-            {/* Animated Background */}
-            <div className="absolute inset-0 animate-gradient bg-gradient-to-r from-purple-700 via-gray-900 to-black opacity-50"></div>
-            <div className="flex flex-col justify-between">
+        <div className="min-h-screen bg-white text-blue-900 flex flex-col items-center justify-center px-6 py-12 text-center">
             {/* Hero Section */}
             <motion.div 
                 initial={{ opacity: 0, y: -50 }} 
                 animate={{ opacity: 1, y: 0 }} 
                 transition={{ duration: 1 }}
-                className="max-w-3xl text-center relative z-10">
+                className="max-w-3xl text-center">
                 <motion.h1 
-                    className="text-5xl font-extrabold leading-tight bg-clip-text text-transparent bg-gradient-to-r from-violet-400 to-violet-600"
+                    className="text-5xl font-extrabold leading-tight"
                     animate={{ scale: [1, 1.05, 1] }}
                     transition={{ repeat: Infinity, duration: 2 }}
                 >
                     Revolutionizing Education with {" "}
-                    <span className="text-violet-300">AI & Blockchain</span>
+                    <span className="text-blue-700"> 
+                        <motion.span 
+                            className="inline-block"
+                            animate={{ opacity: [1, 0, 1] }}
+                            transition={{ repeat: Infinity, duration: 2 }}
+                        >AI</motion.span> & 
+                        <motion.span 
+                            className="inline-block"
+                            animate={{ opacity: [0, 1, 0] }}
+                            transition={{ repeat: Infinity, duration: 2 }}
+                        >Blockchain</motion.span>
+                    </span>
                 </motion.h1>
                 <motion.p 
-                    className="mt-4 text-lg text-gray-400"
+                    className="mt-4 text-lg text-blue-700"
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ duration: 1.5 }}
@@ -52,7 +63,7 @@ const LandingPage = () => {
 
                 <motion.button 
                     onClick={handleLogin}
-                    className="mt-6 bg-violet-600 hover:bg-violet-700 text-white font-bold py-3 px-8 rounded-full shadow-lg transition-all duration-300 transform hover:scale-110 hover:shadow-violet-500/50 flex items-center mx-auto border border-violet-500 hover:border-white"
+                    className="mt-6 bg-blue-700 hover:bg-blue-800 text-white font-bold py-3 px-8 rounded-full shadow-lg transition-all duration-300 transform hover:scale-110 hover:shadow-blue-500/50 flex items-center justify-center mx-auto border border-blue-600 hover:border-gray-400"
                     whileHover={{ scale: 1.1 }}
                     whileTap={{ scale: 0.9 }}
                 >
@@ -62,7 +73,7 @@ const LandingPage = () => {
 
             {/* Feature Sections */}
             <motion.div 
-                className="mt-12 flex flex-wrap justify-center gap-10 max-w-6xl relative z-10"
+                className="mt-12 flex flex-wrap justify-center gap-10 max-w-6xl"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 1.5 }}
@@ -83,9 +94,6 @@ const LandingPage = () => {
                     desc="AI-driven skill gap analysis & badge suggestions."
                 />
             </motion.div>
-
-            </div>
-            
         </div>
     );
 };
@@ -93,14 +101,14 @@ const LandingPage = () => {
 // Feature Card Component
 const FeatureCard = ({ icon, title, desc }) => (
     <motion.div 
-        className="bg-gray-900 p-8 w-72 rounded-2xl shadow-lg border border-gray-700 
+        className="bg-white p-8 w-72 rounded-2xl shadow-lg border border-blue-400 
                     flex flex-col items-center text-center transition-all duration-300 
-                    hover:scale-105 hover:shadow-violet-500/50"
+                    hover:scale-105 hover:shadow-blue-500/50"
         whileHover={{ scale: 1.05 }}
     >
-        <div className="text-5xl text-violet-400 animate-pulse">{icon}</div>
-        <h3 className="mt-4 text-2xl font-bold text-gray-100">{title}</h3>
-        <p className="mt-2 text-gray-400">{desc}</p>
+        <div className="text-5xl text-blue-600 animate-pulse">{icon}</div>
+        <h3 className="mt-4 text-2xl font-bold text-blue-900">{title}</h3>
+        <p className="mt-2 text-blue-700">{desc}</p>
     </motion.div>
 );
 
